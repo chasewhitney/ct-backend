@@ -18,9 +18,7 @@ const mealSchema = new mongoose.Schema({
 
 const Meal = mongoose.model("Meal", mealSchema);
 
-// TODO: Where to set NETCARBS, DATE, IMG
-// TODO: Where to validate NETCARBS, DATE, IMG
-function validate(meal) {
+function validateMeal(meal) {
   const schema = {
     _id: Joi.objectId().required(),
     name: Joi.string()
@@ -54,4 +52,4 @@ function validate(meal) {
 }
 
 exports.Meal = Meal;
-exports.validate = validate;
+exports.validateMeal = validateMeal;

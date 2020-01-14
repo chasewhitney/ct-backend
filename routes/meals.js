@@ -1,4 +1,4 @@
-const { Meal } = require("../models/meal");
+const { Meal, validate } = require("../models/meal");
 const express = require("express");
 const router = express.Router();
 
