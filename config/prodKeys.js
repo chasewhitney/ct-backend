@@ -1,4 +1,5 @@
 module.exports = {
   db: null,
-  port: null
+  port: null,
+  jwtPrivateKey: null
 };
