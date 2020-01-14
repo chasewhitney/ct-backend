@@ -10,6 +10,6 @@ module.exports = function() {
   winston.add(winston.transports.File, { filename: "./logs/logfile.log" });
 
   process.on("unhandledRejection", ex => {
-    throw new ex();
+    throw ex;
   });
 };

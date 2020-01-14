@@ -1,4 +1,5 @@
 node_modules/
 coverage/
 devKeys.js
+testKeys.js
 logs/
