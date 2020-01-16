@@ -24,7 +24,11 @@
     "winston": "^2.4.0"
   },
   "devDependencies": {
-    "jest": "^24.9.0",
+    "jest": "^22.2.2",
     "supertest": "^4.0.2"
+  },
+  "jest": {
+    "verbose": true,
+    "testURL": "http://localhost/"
   }
 }

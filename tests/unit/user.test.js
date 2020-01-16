@@ -12,8 +12,6 @@ describe("user.generateAuthToken", () => {
 
     const token = user.generateAuthToken();
     const decoded = jwt.verify(token, jwtPrivateKey);
-    console.log("payload", payload);
-    console.log("decoded", decoded);
     expect(decoded).toMatchObject(payload);
   });
 });

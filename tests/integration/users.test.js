@@ -3,12 +3,12 @@
 const request = require("supertest");
 const { User } = require("../../models/user");
 
-let server;
-let name;
-let email;
-let password;
-
 describe("user route", () => {
+  let server;
+  let name;
+  let email;
+  let password;
+
   beforeEach(() => {
     server = require("../../index");
     name = "123456";
@@ -16,16 +16,16 @@ describe("user route", () => {
     password = "123456";
   });
 
+  afterEach(async () => {
+    await User.remove({});
+    await server.close();
+  });
+
   const exec = () => {
     return request(server)
       .post("/api/users")
       .send({ name, email, password });
   };
-
-  afterEach(async () => {
-    await User.remove({});
-    await server.close();
-  });
 
   it("should return 400 if name is less than 3 characters", async () => {
     name = "12";
