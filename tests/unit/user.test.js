@@ -1,0 +1,19 @@
+// Unit testing for User model
+
+const { User } = require("../../models/user");
+const jwt = require("jsonwebtoken");
+const jwtPrivateKey = require("../../config/keys").jwtPrivateKey;
+const mongoose = require("mongoose");
+
+describe("user.generateAuthToken", () => {
+  it("should generate a valid jwt", () => {
+    const payload = { _id: new mongoose.Types.ObjectId().toHexString() };
+    const user = new User(payload);
+
+    const token = user.generateAuthToken();
+    const decoded = jwt.verify(token, jwtPrivateKey);
+    console.log("payload", payload);
+    console.log("decoded", decoded);
+    expect(decoded).toMatchObject(payload);
+  });
+});
