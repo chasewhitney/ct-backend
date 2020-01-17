@@ -9,13 +9,12 @@ describe("auth middleware", () => {
   it("should populate req.user if provided token is valid", () => {
     const userObject = { _id: "123", name: "345" };
     const token = jwt.sign(userObject, jwtPrivateKey);
-    const res = "";
     const req = {
-      header: function() {
-        return token;
-      }
+      header: jest.fn().mockReturnValue(token)
     };
-    const next = () => {};
+    const res = {};
+    const next = jest.fn();
+
     auth(req, res, next);
 
     expect(req.user).toMatchObject(userObject);
