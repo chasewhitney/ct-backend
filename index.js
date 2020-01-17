@@ -16,20 +16,9 @@ const server = app.listen(port, () => {
 
 module.exports = server;
 
-// Models
-// TODO: User model
-
 // Middleware
 // TODO: Authenticate users
 // TODO: Validate objectId
-// TODO: Validate request bodies
 
 // Routes/Endpoints
-// TODO: Login
-// TODO: Register user
-// TODO: History
-// TODO: Favorites
 // TODO: Meals
-
-// Testing
-//

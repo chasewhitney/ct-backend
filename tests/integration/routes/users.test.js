@@ -1,16 +1,16 @@
-// Integration testing for users route
+// Users route - Integration testing
 
 const request = require("supertest");
-const { User } = require("../../models/user");
+const { User } = require("../../../models/user");
 
-describe("user route", () => {
+describe("/api/users", () => {
   let server;
   let name;
   let email;
   let password;
 
   beforeEach(() => {
-    server = require("../../index");
+    server = require("../../../index");
     name = "123456";
     email = "email@email.com";
     password = "123456";
@@ -62,7 +62,7 @@ describe("user route", () => {
 
     expect(res.status).toBe(400);
   });
-  it("should save user to database if it is valid", async () => {
+  it("should save user to database if registration info is valid", async () => {
     const res = await exec();
 
     const user = await User.findOne({ name: "123456" });
@@ -73,7 +73,7 @@ describe("user route", () => {
     expect(user).toHaveProperty("name", "123456");
     expect(user).toHaveProperty("email", "email@email.com");
   });
-  it("should return user with token if object if it is valid", async () => {
+  it("should return token if registration info is valid", async () => {
     const res = await exec();
     const token = res.headers["x-auth-token"];
 

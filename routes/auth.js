@@ -1,3 +1,5 @@
+// Auth router - User login
+
 const express = require("express");
 const router = express.Router();
 const Joi = require("joi");
@@ -5,6 +7,7 @@ const { User } = require("../models/user");
 const jwt = require("jsonwebtoken");
 const validate = require("../middleware/validate");
 const bcrypt = require("bcryptjs");
+const _ = require("lodash");
 
 // Handles login
 router.post("/", validate(validateUser), async (req, res) => {
@@ -16,7 +19,8 @@ router.post("/", validate(validateUser), async (req, res) => {
 
   const token = user.generateAuthToken();
 
-  res.send(token);
+  user = _.pick(user, ["_id", "name", "email"]);
+  res.header("x-auth-token", token).send(user);
 });
 
 function validateUser(req) {

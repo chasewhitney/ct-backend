@@ -1,3 +1,5 @@
+// Validate req.body on api endpoints
+
 module.exports = validator => {
   return (req, res, next) => {
     const { error } = validator(req.body);

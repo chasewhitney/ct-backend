@@ -1,4 +1,5 @@
-// REGISTER NEW USER - USER ROUTER
+// User router - Register new User
+
 const _ = require("lodash");
 const express = require("express");
 const router = express.Router();

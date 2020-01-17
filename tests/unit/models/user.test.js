@@ -1,8 +1,8 @@
-// Unit testing for User model
+// User model - Unit Testing
 
-const { User } = require("../../models/user");
+const { User } = require("../../../models/user");
 const jwt = require("jsonwebtoken");
-const jwtPrivateKey = require("../../config/keys").jwtPrivateKey;
+const jwtPrivateKey = require("../../../config/keys").jwtPrivateKey;
 const mongoose = require("mongoose");
 
 describe("user.generateAuthToken", () => {

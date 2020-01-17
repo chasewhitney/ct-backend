@@ -1,16 +1,19 @@
+// Auth route - Integration testing
+
 const request = require("supertest");
-const { User } = require("../../models/user");
+const { User } = require("../../../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const jwtPrivateKey = require("../../config/keys").jwtPrivateKey;
+const jwtPrivateKey = require("../../../config/keys").jwtPrivateKey;
+const _ = require("lodash");
 
-describe("auth route", () => {
+describe("/api/auth", () => {
   let server;
   let email;
   let password;
 
   beforeEach(() => {
-    server = require("../../index");
+    server = require("../../../index");
     email = "123@mail.com";
     password = "123456";
   });
@@ -64,6 +67,8 @@ describe("auth route", () => {
     const res = await exec();
 
     expect(res.status).toBe(200);
-    expect(jwt.verify(res.text, jwtPrivateKey)).toHaveProperty("_id");
+    expect(
+      jwt.verify(res.headers["x-auth-token"], jwtPrivateKey)
+    ).toHaveProperty("_id");
   });
 });
