@@ -17,7 +17,6 @@ const server = app.listen(port, () => {
 module.exports = server;
 
 // Middleware
-// TODO: Authenticate users
 // TODO: Validate objectId
 
 // Routes/Endpoints
