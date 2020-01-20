@@ -3,13 +3,31 @@
 const request = require("supertest");
 const auth = require("../../../middleware/auth");
 const { User } = require("../../../models/user");
+const mongoose = require("mongoose");
 
 describe("auth middleware", () => {
   let server;
   let token;
+
+  const id = mongoose.Types.ObjectId();
+  const newMeal = {
+    name: "123",
+    userId: id,
+    servings: 1,
+    servingSize: "123",
+    calories: 1,
+    carbs: 1,
+    fiber: 1,
+    fat: 1,
+    protein: 1,
+    netCarbs: 0,
+    img: "myUrl.jpeg",
+    date: new Date()
+  };
+
   beforeEach(() => {
     server = require("../../../index");
-    token = new User().generateAuthToken();
+    token = new User({ _id: id }).generateAuthToken();
   });
 
   afterEach(async () => {
@@ -20,7 +38,7 @@ describe("auth middleware", () => {
     return request(server)
       .post("/api/meals")
       .set("x-auth-token", token)
-      .send({});
+      .send(newMeal);
   };
 
   it("should return 401 if no token is provided", async () => {
@@ -38,6 +56,7 @@ describe("auth middleware", () => {
   it("should return 200 if token is valid", async () => {
     const res = await exec();
 
+    console.log("res:", res.text);
     expect(res.status).toBe(200);
   });
 });

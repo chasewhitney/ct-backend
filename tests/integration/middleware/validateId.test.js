@@ -15,21 +15,25 @@ describe("validateId middleware", () => {
 
   beforeEach(async () => {
     server = require("../../../index");
-    _id = new mongoose.Types.ObjectId();
-    queryId = _id;
+    mealId = mongoose.Types.ObjectId();
+    queryId = mealId;
+    userId = mongoose.Types.ObjectId();
     mealProps = {
-      _id: _id,
+      _id: mealId,
       name: "123456",
-      user: "12345",
-      servings: "2",
+      userId: userId,
+      servings: 1,
       servingSize: "12345",
-      calories: "1",
-      carbs: "1",
-      fiber: "1",
-      fat: "1",
-      protein: "1"
+      calories: 1,
+      carbs: 1,
+      fiber: 1,
+      fat: 1,
+      protein: 1,
+      netCarbs: 0,
+      img: "myUrl.jpeg",
+      date: new Date()
     };
-    token = jwt.sign({ _id: "123" }, jwtPrivateKey);
+    token = jwt.sign({ _id: userId }, jwtPrivateKey);
 
     meal = new Meal(mealProps);
     await meal.save();
