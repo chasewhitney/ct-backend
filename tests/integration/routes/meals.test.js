@@ -9,15 +9,19 @@ describe("/api/meals", () => {
   let token;
   let _id;
   let meal;
+  let mealId;
 
   beforeEach(async () => {
     server = require("../../../index");
 
-    _id = mongoose.Types.ObjectId();
-    token = new User({ _id: _id }).generateAuthToken();
+    userId = mongoose.Types.ObjectId();
+    mealId = mongoose.Types.ObjectId();
+
+    token = new User({ _id: userId }).generateAuthToken();
     meal = new Meal({
+      _id: mealId,
       name: "123",
-      userId: _id,
+      userId: userId,
       servings: 1,
       servingSize: "12345",
       calories: 5,
@@ -32,7 +36,7 @@ describe("/api/meals", () => {
     await meal.save();
     meal = new Meal({
       name: "456",
-      userId: _id,
+      userId: userId,
       servings: 1,
       servingSize: "12345",
       calories: 5,
@@ -99,7 +103,7 @@ describe("/api/meals", () => {
     beforeEach(() => {
       newMeal = {
         name: "123",
-        userId: _id,
+        userId: userId,
         servings: 1,
         servingSize: "123",
         calories: 1,
@@ -251,9 +255,37 @@ describe("/api/meals", () => {
       expect(res.status).toBe(200);
     });
   });
-  // describe("PUT /:id", () => {
-  //   it("should do something", async () => {
-  //     expect(2).toBe(3);
-  //   });
-  // });
+  describe("PUT /:id", () => {
+    let mealToEdit;
+
+    beforeEach(async () => {
+      mealToEdit = await Meal.findOne({ _id: mealId }).select("-__v");
+    });
+
+    afterEach(async () => {
+      await Meal.remove();
+    });
+
+    const exec = () => {
+      return request(server)
+        .put(`/api/meals/${mealId}`)
+        .set("x-auth-token", token)
+        .send(mealToEdit);
+    };
+    it("should return new version of meal if data is valid", async () => {
+      mealToEdit.name = "new name";
+
+      const res = await exec();
+      expect(res.status).toBe(200);
+      expect(res.body.name).toBe("new name");
+    });
+    it("should save new version of meal to db if data is valid", async () => {
+      mealToEdit.name = "new name";
+
+      const res = await exec();
+      const savedMeal = await Meal.findOne({ _id: mealId });
+
+      expect(savedMeal.name).toBe("new name");
+    });
+  });
 });

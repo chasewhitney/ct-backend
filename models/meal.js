@@ -68,10 +68,7 @@ function validateMeal(meal) {
       .required()
       .min(1)
       .max(300),
-    netCarbs: Joi.number()
-      .required()
-      .min(meal.carbs - meal.fiber)
-      .max(meal.carbs - meal.fiber),
+    netCarbs: Joi.number().required(),
     date: Joi.date().required()
   };
   return Joi.validate(meal, schema);

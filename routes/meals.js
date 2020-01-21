@@ -9,7 +9,7 @@ const validate = require("../middleware/validate");
 const moment = require("moment");
 
 router.get("/", auth, async (req, res) => {
-  const meals = await Meal.find({ userId: req.user._id });
+  const meals = await Meal.find({ userId: req.user._id }).select("-__v");
   res.send(meals);
 });
 
@@ -34,6 +34,9 @@ router.post("/", [auth, validate(validateMeal)], async (req, res) => {
   if (req.user._id != req.body.userId) {
     return res.status(400).send("Invalid meal data.");
   }
+  if (req.body.netCarbs != req.body.carbs - req.body.fiber) {
+    return res.status(400).send("Invalid meal data.");
+  }
   const meal = new Meal(req.body);
   await meal.save();
 
@@ -44,7 +47,9 @@ router.put(
   "/:id",
   [auth, validateId, validate(validateMeal)],
   async (req, res) => {
-    res.send("Put");
+    await Meal.findByIdAndUpdate(req.params.id, req.body).select("-__v");
+    const meal = await Meal.findOne({ _id: req.params.id });
+    res.send(meal);
   }
 );
 

@@ -56,7 +56,6 @@ describe("auth middleware", () => {
   it("should return 200 if token is valid", async () => {
     const res = await exec();
 
-    console.log("res:", res.text);
     expect(res.status).toBe(200);
   });
 });
