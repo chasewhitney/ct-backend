@@ -19,5 +19,4 @@ module.exports = server;
 // TODO: netCarbs validation
 
 // Routes/Endpoints
-// TODO: Meals
 // TODO: Favorites
