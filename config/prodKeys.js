@@ -1,5 +1,5 @@
 module.exports = {
-  db: null,
-  port: null,
-  jwtPrivateKey: null
+  db: process.env.MONGO_URI,
+  port: process.env.PORT,
+  jwtPrivateKey: process.env.JWT_PRIVATE_KEY
 };
