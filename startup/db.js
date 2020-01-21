@@ -1,3 +1,5 @@
+// Connect to db
+
 const mongoose = require("mongoose");
 const { db } = require("../config/keys");
 const winston = require("winston");

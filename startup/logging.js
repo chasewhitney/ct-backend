@@ -1,3 +1,5 @@
+// Setup logging, exception-handling, rejection-handling
+
 const winston = require("winston");
 require("express-async-errors");
 

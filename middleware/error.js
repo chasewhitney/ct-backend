@@ -1,4 +1,4 @@
-// Handle route errors
+// Handle and log route errors
 
 const winston = require("winston");
 

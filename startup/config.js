@@ -1,3 +1,5 @@
+// Check for jwtPrivateKey
+
 const { jwtPrivateKey } = require("../config/keys");
 
 module.exports = function() {

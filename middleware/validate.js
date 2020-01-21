@@ -1,4 +1,4 @@
-// Validate req.body on api endpoints
+// Validate req.body on api endpoints using passed validator function
 
 module.exports = validator => {
   return (req, res, next) => {
