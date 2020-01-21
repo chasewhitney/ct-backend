@@ -16,8 +16,8 @@ const server = app.listen(port, () => {
 
 module.exports = server;
 
-// Middleware
-// TODO: Validate objectId
+// TODO: netCarbs validation
 
 // Routes/Endpoints
 // TODO: Meals
+// TODO: Favorites

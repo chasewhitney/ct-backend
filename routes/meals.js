@@ -25,7 +25,7 @@ router.get("/today", auth, async (req, res) => {
       $lte: tomorrow
     },
     userId: req.user._id
-  });
+  }).select("-__v");
 
   res.send(meals);
 });
@@ -47,14 +47,30 @@ router.put(
   "/:id",
   [auth, validateId, validate(validateMeal)],
   async (req, res) => {
-    await Meal.findByIdAndUpdate(req.params.id, req.body).select("-__v");
-    const meal = await Meal.findOne({ _id: req.params.id });
+    const meal = await Meal.findOneAndUpdate(
+      { _id: req.params.id, userId: req.user._id },
+      req.body,
+      {
+        new: true
+      }
+    ).select("-__v");
+
+    if (!meal) res.status(404).send("Could not find user meal with that id");
+
     res.send(meal);
   }
 );
 
-router.delete("/:id", auth, (req, res) => {
-  res.send("Deleted");
+router.delete("/:id", [auth, validateId], async (req, res) => {
+  const meal = await Meal.findOneAndDelete({
+    _id: req.params.id,
+    userId: req.user._id
+  });
+  console.log("meal:", meal);
+  if (!meal)
+    return res.status(404).send("Could not find user meal with given id");
+
+  res.send(meal);
 });
 
 module.exports = router;

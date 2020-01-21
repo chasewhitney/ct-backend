@@ -10,6 +10,7 @@ describe("/api/meals", () => {
   let _id;
   let meal;
   let mealId;
+  let tokenUserId;
 
   beforeEach(async () => {
     server = require("../../../index");
@@ -272,12 +273,26 @@ describe("/api/meals", () => {
         .set("x-auth-token", token)
         .send(mealToEdit);
     };
+    it("should return 404 if no meal found with given id", async () => {
+      mealId = mongoose.Types.ObjectId();
+
+      const res = await exec();
+
+      expect(res.status).toBe(404);
+    });
+    it("should return 404 if meal belongs to a different user", async () => {
+      token = new User({ _id: mongoose.Types.ObjectId() }).generateAuthToken();
+
+      const res = await exec();
+
+      expect(res.status).toBe(404);
+    });
     it("should return new version of meal if data is valid", async () => {
       mealToEdit.name = "new name";
 
       const res = await exec();
       expect(res.status).toBe(200);
-      expect(res.body.name).toBe("new name");
+      expect(res.body.name).toContain("new");
     });
     it("should save new version of meal to db if data is valid", async () => {
       mealToEdit.name = "new name";
@@ -285,7 +300,41 @@ describe("/api/meals", () => {
       const res = await exec();
       const savedMeal = await Meal.findOne({ _id: mealId });
 
-      expect(savedMeal.name).toBe("new name");
+      expect(savedMeal.name).toContain("new");
+    });
+  });
+  describe("DELETE /:id", () => {
+    const exec = () => {
+      return request(server)
+        .delete(`/api/meals/${mealId}`)
+        .set("x-auth-token", token);
+    };
+
+    it("should return 404 if no meal found with given id", async () => {
+      mealId = mongoose.Types.ObjectId();
+
+      const res = await exec();
+
+      expect(res.status).toBe(404);
+    });
+    it("should return 404 if meal belongs to different user", async () => {
+      token = new User({ _id: mongoose.Types.ObjectId() }).generateAuthToken();
+
+      const res = await exec();
+
+      expect(res.status).toBe(404);
+    });
+    it("should delete meal from the database", async () => {
+      await exec();
+
+      const deletedMeal = await Meal.findById(mealId);
+      expect(deletedMeal).toBeNull();
+    });
+    it("should return deleted meal if successful", async () => {
+      const res = await exec();
+
+      expect(res.status).toBe(200);
+      expect(res.body._id).toContain(mealId);
     });
   });
 });
